@@ -23,6 +23,22 @@ http.createServer(function (req, res) {
 		}
 	}
 	
+	// ++ KIM 140506
+	var data = "";
+	if ( req.method == "GET" ) {
+		data = req.url;
+		console.log( "GET > " + data );
+	} else if ( req.method == "POST" ) {
+		req.on( "data", function(chunk) {
+			console.log( "POST CHUNK > " + data );
+			data += chunk;
+		});
+		req.on( "end", function() {
+			console.log( "POST END > " + data );
+		});
+	}
+	// -- KIM 140506
+	
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.write("Welcome to Node.js on OpenShift!\n\n");
   res.end("Your IP address seems to be " + addr + "\n");
